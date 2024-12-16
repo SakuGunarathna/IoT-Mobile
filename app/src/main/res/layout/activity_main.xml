@@ -1,19 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="#FFFFFF">
 
+    <!-- Back Button -->
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="@null"
+        android:src="@drawable/ic_back"
+        android:contentDescription="Back"
+        android:layout_alignParentStart="true" />
+
+    <!-- Time TextView -->
     <TextView
+        android:id="@+id/timeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Time : 01:34 AM"
+        android:textColor="#002F5F"
+        android:textStyle="bold"
+        android:textSize="14sp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="250dp"
+        android:elevation="5dp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Toggle Switch -->
+
+    <!-- Hanging Light Icon -->
+
+    <Switch
+        android:id="@+id/autoSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/timeText"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"
+        android:text="Auto"
+        android:textColor="#D2193D"
+        android:textSize="25sp"
+        android:elevation="5dp" />
+
+    <ImageView
+        android:id="@+id/lightIcon"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_below="@id/timeText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-29dp"
+        android:elevation="1dp"
+        android:src="@drawable/ic_light" />
+
+    <!-- Heart Rate and SpO2 Section -->
+    <LinearLayout
+        android:id="@+id/heartRateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/lightIcon"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/heartRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Heart Rate : 00 bpm"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/spo2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="SpO2 : 00 %"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:layout_marginRight="36dp"/>
+    </LinearLayout>
+
+
+    <!-- Light Modes -->
+
+    <!-- Sleep Mode -->
+
+    <!-- Bottom Navigation Bar -->
+
+    <LinearLayout
+        android:id="@+id/modesLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/heartRateLayout"
+        android:layout_marginTop="38dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <!-- Off Mode -->
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@color/white">
+
+            <ImageButton
+                android:id="@+id/myImageButton"
+                android:layout_width="150dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_offmodeauto"
+                android:elevation="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Off Mode"
+                android:textSize="15sp"
+                android:elevation="20dp"/>
+
+        </LinearLayout>
+
+        <!-- Dim Mode -->
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/myImageButton"
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_dimmodeauto"
+                android:elevation="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="Dim Mode"
+                android:textSize="15sp"
+                android:elevation="20dp"/>
+        </LinearLayout>
+
+        <!-- On Mode -->
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/myImageButton"
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_onmodeauto"
+                android:elevation="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="On Mode"
+                android:textSize="15sp"
+                android:elevation="20dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="500dp">
+
+        <ImageView
+            android:id="@+id/eyesIcon"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="-165dp"
+            android:layout_marginRight="-165dp"
+            android:elevation="1dp"
+            android:src="@drawable/ic_eyes" />
+
+        <TextView
+            android:id="@+id/sleepMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="70dp"
+            android:elevation="5dp"
+            android:text="Sleep Mode : Awake"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="#FDCB40"
+        android:weightSum="3">
+
+        <!-- Grid Button -->
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/gridButton"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:src="@drawable/ic_grid"-->
+        <!--            android:contentDescription="Grid" />-->
+        <!--&lt;!&ndash;            android:background="@null"&ndash;&gt;-->
+
+        <!-- Home Button -->
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/homeButton"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_weight="1" />-->
+        <!--            android:src="@drawable/ic_home"-->
+        <!--            android:contentDescription="Home"-->
+        <!--            android:background="@null" />-->
+
+        <!-- Menu Button -->
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/menuButton"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_weight="1" />-->
+        <!--            android:src="@drawable/ic_menu"-->
+        <!--            android:contentDescription="Menu"-->
+        <!--            android:background="@null" />-->
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>
