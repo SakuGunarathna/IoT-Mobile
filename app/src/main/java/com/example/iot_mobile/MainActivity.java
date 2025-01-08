@@ -2,6 +2,9 @@ package com.example.iot_mobile;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +17,15 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import android.view.View;
+import android.widget.Toast;
+
+import java.util.Arrays;
+import java.util.Collections;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView heartrate;
@@ -23,12 +35,89 @@ public class MainActivity extends AppCompatActivity {
     private static final String SERVER_URI = "tcp://test.mosquitto.org:1883";
     private static final String TAG ="MainActivity";
 
+    private boolean isManualMode = false;
+
+    private final String BASE_URL = "https://api.smartthings.com/v1/devices/c76edeba-bb8a-4411-bf4e-2e911da74d3a/commands";
+    private final String AUTH_TOKEN = "Bearer 3299b3ea-5803-4a3c-ae48-29f56639b6a6";
+    private ApiService apiService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        EdgeToEdge.enable(MainActivity.this);
         setContentView(R.layout.activity_main);
 
+        apiService = ApiClient.createService();
+
+        ImageButton btnOn = findViewById(R.id.btnOn);
+        ImageButton btnOff = findViewById(R.id.btnOff);
+        ImageButton btnDim = findViewById(R.id.btnDim);
+        TextView bulbstatus = findViewById(R.id.bulbstatus);
+        TextView sleepMode = findViewById(R.id.sleepMode);
+        ImageView eyesIcon = findViewById(R.id.eyesIcon);
+
+        Switch switchMode = findViewById(R.id.switchMode);
+
+        switchMode.setChecked(isManualMode);
+
+        btnOn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendDimCommand(100);
+                bulbstatus.setVisibility(View.VISIBLE);
+                bulbstatus.setText("Your Smart Bulb is On");
+            }
+        });
+
+        btnDim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendDimCommand(2);
+                bulbstatus.setText("Your Smart Bulb is Dim");
+            }
+        });
+
+        btnOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendCommand("off");
+                bulbstatus.setText("Your Smart Bulb is Off");
+            }
+        });
+
+        switchMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                Toast.makeText(MainActivity.this, "Auto" , Toast.LENGTH_SHORT).show();
+                switchMode.setText("Auto");
+                heartrate.setVisibility(View.VISIBLE);
+                spo2.setVisibility(View.VISIBLE);
+                eyesIcon.setVisibility(View.VISIBLE);
+                sleepMode.setVisibility(View.VISIBLE);
+                bulbstatus.setVisibility(View.INVISIBLE);
+                btnOn.setEnabled(false); // Disables the button
+                btnOff.setEnabled(false);
+                btnDim.setEnabled(false);
+                btnOn.setImageResource(R.drawable.ic_onmodeauto);
+                btnOff.setImageResource(R.drawable.ic_offmodeauto);
+                btnDim.setImageResource(R.drawable.ic_dimmodeauto);
+
+            } else {
+                Toast.makeText(MainActivity.this, "Manual" , Toast.LENGTH_SHORT).show();
+                switchMode.setText("Manual");
+                heartrate.setVisibility(View.INVISIBLE);
+                spo2.setVisibility(View.INVISIBLE);
+                eyesIcon.setVisibility(View.INVISIBLE);
+                sleepMode.setVisibility(View.INVISIBLE);
+                bulbstatus.setVisibility(View.VISIBLE);
+                btnOn.setEnabled(true); // Disables the button
+                btnOff.setEnabled(true);
+                btnDim.setEnabled(true);
+                btnOn.setImageResource(R.drawable.ic_onmodemanual);
+                btnOff.setImageResource(R.drawable.ic_offmodemanual);
+                btnDim.setImageResource(R.drawable.ic_dimmodemanual);
+
+            }
+        });
 
         heartrate = (TextView) findViewById(R.id.heartRate);
         spo2 = (TextView) findViewById(R.id.spo2);
@@ -58,13 +147,10 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("SpO2: " + spo2);
                 heartrate.setText("Heart Rate : " + heartRate+ " bpm");
                 spo2.setText("SpO2 : " + spo2val+ " %");
-
-
             }
 
             @Override
             public void deliveryComplete(IMqttDeliveryToken token) {
-
             }
 
             @Override
@@ -74,11 +160,8 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     System.out.println("Connected to: " + serverURI);
                     subscribe("sensor/data");
-
                 }
-
             }
-
         });
     }
 
@@ -98,7 +181,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (MqttException e) {
             e.printStackTrace();
             System.out.println(e);
-
         }
     }
 
@@ -112,5 +194,58 @@ public class MainActivity extends AppCompatActivity {
             });
         } catch (MqttException e) { e.printStackTrace();
         }
+    }
+
+    private void sendCommand(String command) {
+        CommandRequest commandRequest = new CommandRequest(
+                Collections.singletonList(
+                        new Command("main", "switch", command)
+                )
+        );
+
+        apiService.sendCommand(BASE_URL, AUTH_TOKEN, commandRequest).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                System.out.println();
+                if (response.isSuccessful()) {
+                    Toast.makeText(MainActivity.this, "Command '" + command + "' sent successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Failed to send command", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    private void sendDimCommand(Integer level) {
+        CommandRequest commandRequest = new CommandRequest(
+                Collections.singletonList(
+                        new Command(
+                                "main",
+                                "switchLevel",
+                                "setLevel",
+                                Arrays.asList(level)
+                        )
+                )
+        );
+
+        apiService.sendCommand(BASE_URL, AUTH_TOKEN, commandRequest).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(MainActivity.this, "Dim command sent successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Failed to send dim command", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
