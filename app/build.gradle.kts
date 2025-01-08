@@ -8,8 +8,8 @@ android {
 
     defaultConfig {
         applicationId = "com.example.iot_mobile"
-        minSdk = 24
-        targetSdk = 30
+        minSdk = 30
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -43,4 +43,8 @@ dependencies {
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
     implementation("org.eclipse.paho:org.eclipse.paho.android.service:1.1.1")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 }
