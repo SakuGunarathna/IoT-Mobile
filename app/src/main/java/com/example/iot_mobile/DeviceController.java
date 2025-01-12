@@ -16,14 +16,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * This class is responsible for
+ * 1. Communicating with MQTT broker
+ * 2. Communicating with SmartThings APIs
+ */
 public class DeviceController {
 
     private final MqttAndroidClient client;
     private static final String SERVER_URI = "tcp://test.mosquitto.org:1883";
     private static final String TAG = "DeviceController";
     private final ApiService apiService;
-    private static final String BASE_URL = "https://api.smartthings.com/v1/devices/81fbd4e5-ab0d-438f-b7d7-54d072415a4d/commands";
-    private static final String AUTH_TOKEN = "Bearer 5c270a0d-c41f-40a7-9193-8c4293a663a6";
+    private static final String BASE_URL = "https://api.smartthings.com/v1/devices/adf6d117-929c-4759-843c-1a143fb2f950/commands";
+    private static final String AUTH_TOKEN = "Bearer f1ed736f-afaf-489d-a982-0d7769946cc4";
 
     public interface MqttCallback {
         void onMessageReceived(int heartRate, int spo2, String sleepMode);
@@ -76,6 +81,11 @@ public class DeviceController {
                 int heartRate = Integer.parseInt(parts[0].split(": ")[1].replace(" BPM", ""));
                 int spo2 = Integer.parseInt(parts[1].split(": ")[1].replace("%", ""));
                 String sleepMode = parts[2].split(": ")[1];
+
+                System.out.println("HearRate from Mqtt: " + heartRate);
+                System.out.println("SpO2 from Mqtt: " + spo2);
+                System.out.println("SleepMode from Mqtt: " + sleepMode);
+
                 callback.onMessageReceived(heartRate, spo2, sleepMode);
             }
 

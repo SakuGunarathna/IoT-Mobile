@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#FFFFFF">
 
-    <!-- Switch for Manual Mode -->
     <Switch
         android:id="@+id/switchMode"
         android:layout_width="wrap_content"
@@ -19,7 +19,6 @@
         android:elevation="5dp"
         android:checked="false"/>
 
-    <!-- Light Icon -->
     <ImageView
         android:id="@+id/lightIcon"
         android:layout_width="200dp"
@@ -29,7 +28,6 @@
         android:elevation="1dp"
         android:src="@drawable/ic_light" />
 
-    <!-- Heart Rate Layout -->
     <LinearLayout
         android:id="@+id/heartRateLayout"
         android:layout_width="match_parent"
@@ -68,7 +66,6 @@
             android:visibility="gone" />
     </LinearLayout>
 
-    <!-- Modes Layout -->
     <LinearLayout
         android:id="@+id/modesLayout"
         android:layout_width="match_parent"
@@ -78,7 +75,6 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <!-- Off Mode -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -104,7 +100,6 @@
                 android:elevation="5dp" />
         </LinearLayout>
 
-        <!-- Dim Mode -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -130,7 +125,6 @@
                 android:elevation="5dp" />
         </LinearLayout>
 
-        <!-- On Mode -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -157,7 +151,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Sleep Mode Section -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -188,16 +181,25 @@
 
     </RelativeLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_above="@+id/bottomNav"
+        app:backgroundTint="#FFFFFF"
+        android:layout_marginLeft="340dp"
+        android:layout_marginBottom="15dp"
+        app:srcCompat="@drawable/ic_history"/>
 
 
-    <!-- Bottom Navigation Bar -->
+
+
     <LinearLayout
         android:id="@+id/bottomNav"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="3dp"
+        android:layout_marginBottom="55dp"
         android:background="#FDCB40"
-        android:orientation="horizontal"
-        android:weightSum="3" />
+        android:orientation="horizontal"></LinearLayout>
 </RelativeLayout>
