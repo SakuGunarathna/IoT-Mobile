@@ -30,6 +30,7 @@
         </activity>
 
         <activity android:name=".MainActivity" />
+        <activity android:name=".DataListActivity" />
 
         <service android:name="org.eclipse.paho.android.service.MqttService"/>
     </application>
