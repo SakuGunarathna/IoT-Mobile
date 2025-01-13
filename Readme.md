@@ -41,6 +41,6 @@ This is the mobile application of the project DarkEase that monitors heartbeat a
 ## Installation
 1. Clone this repository from github: https://github.com/SakuGunarathna/IoT-Mobile.
 2. Open in Android Studio.
-3. Build the project.
+3. Build the project with branch release/1.0.0
 4. Connect Android device to use as emulator.
 5. Run the app.
